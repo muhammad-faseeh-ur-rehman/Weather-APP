@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container py-4">
+      <header class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="fw-bold mb-0">
+            <i class="bi bi-cloud-sun-fill text-primary"></i>
+            Weatherly
+          </h2>
+          <small class="text-secondary"> Live weather forecast </small>
+        </div>
+        <button
+          id="locationBtn"
+          class="btn btn-light shadow-sm"
+          title="Use my location"
+        >
+          <i class="bi bi-geo-alt-fill text-primary"></i>
+        </button>
+      </header>
+      <div class="row g-2 mb-4">
+        <div class="col-12 col-md-9">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0">
+              <i class="bi bi-search"></i>
+            </span>
+            <input
+              type="text"
+              id="cityInput"
+              class="form-control search-input border-start-0"
+              placeholder="Search city e.g. Lahore"
+            />
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
+          <button id="searchBtn" class="btn btn-primary w-100 search-btn">
+            <i class="bi bi-search"></i>
+            Search
+          </button>
+        </div>
+      </div>
+      <div id="loading" class="text-center d-none mb-4">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2 text-secondary">Loading weather...</p>
+      </div>
+      <div id="errorBox" class="alert alert-danger d-none">
+        <i class="bi bi-exclamation-circle"></i>
+        <span id="errorMessage"> Something went wrong. </span>
+      </div>
+      <section id="weatherSection" class="d-none">
+        <div class="weather-card mb-4">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <p class="mb-1 opacity-75">
+                <i class="bi bi-geo-alt-fill"></i>
+                <span id="countryName"> Pakistan </span>
+              </p>
+
+              <h2 id="cityName" class="fw-bold">Lahore</h2>
+
+              <p id="currentDate" class="opacity-75">Today</p>
+
+              <div class="d-flex align-items-center">
+                <div id="currentIcon" class="weather-icon me-3">☀️</div>
+
+                <div>
+                  <div id="temperature" class="temperature">32°</div>
+                  <h5 id="weatherDescription">Sunny</h5>
+                  <p class="mb-0 opacity-75">
+                    Feels like
+                    <span id="feelsLike"> 34 </span>°C
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mt-4 mt-md-0">
+              <div class="row g-3">
+                <div class="col-6">
+                  <div class="weather-stat">
+                    <i class="bi bi-droplet-fill"></i>
+                    <p>Humidity</p>
+                    <h5><span id="humidity"> -- </span>%</h5>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="weather-stat">
+                    <i class="bi bi-wind"></i>
+
+                    <p>Wind</p>
+
+                    <h5>
+                      <span id="windSpeed"> -- </span>
+                      km/h
+                    </h5>
+                  </div>
+                </div>
+
+                <!-- Sunrise -->
+
+                <div class="col-6">
+                  <div class="weather-stat">
+                    <i class="bi bi-sunrise-fill"></i>
+
+                    <p>Sunrise</p>
+
+                    <h5 id="sunrise">--</h5>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="weather-stat">
+                    <i class="bi bi-sunset-fill"></i>
+                    <p>Sunset</p>
+                    <h5 id="sunset">--</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="mb-4">
+          <div class="d-flex justify-content-between mb-3">
+            <h4 class="fw-bold">Hourly Forecast</h4>
+
+            <span class="text-primary"> Today </span>
+          </div>
+          <div id="hourlyForecast" class="hourly-wrapper"></div>
+        </section>
+        <section class="mb-4">
+          <h4 class="fw-bold mb-3">7-Day Forecast</h4>
+          <div id="dailyForecast"></div>
+        </section>
+
+        <section class="mb-4">
+          <h4 class="fw-bold mb-3">Weather Details</h4>
+
+          <div class="row g-3">
+            <!-- Humidity -->
+
+            <div class="col-6 col-md-3">
+              <div class="info-card">
+                <i class="bi bi-droplet-fill"></i>
+
+                <p>Humidity</p>
+
+                <h4><span id="detailHumidity"> -- </span>%</h4>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="info-card">
+                <i class="bi bi-wind"></i>
+                <p>Wind Speed</p>
+                <h4>
+                  <span id="detailWind"> -- </span>
+                  km/h
+                </h4>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="info-card">
+                <i class="bi bi-thermometer-half"></i>
+                <p>Feels Like</p>
+                <h4><span id="detailFeels"> -- </span>°C</h4>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="info-card">
+                <i class="bi bi-speedometer2"></i>
+                <p>Pressure</p>
+                <h4>
+                  <span id="detailPressure"> -- </span>
+                  hPa
+                </h4>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer class="text-center text-secondary py-4">
+        <small> Weatherly © 2026 </small>
+      </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
